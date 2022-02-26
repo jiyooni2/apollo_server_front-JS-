@@ -1,0 +1,134 @@
+Setup
+    react helmet
+        title 동적 변경
+
+    apollo client
+
+    react-fontawesome
+        icon
+
+    npm i styled-component
+    react-hook-form
+    react-router-dom
+    apollo/client graphql
+    react-helmet-async
+    react-fontawesome
+
+
+Router,Authentication,Architecture,styles
+
+add Dark mode at first.
+
+url에 맞는 component를 연결
+url 패턴매칭 여부를 위에서부터 아래로 매치되는지 여부를 보고 보내줌
+    React-router-dom v6부터 exact 기본 설정
+
+Browser Router는 deploy할 때 처리가 필요
+
+로그인 여부에 따라 아예 다른 컴포넌트를 보여주는 등 여러가지 고려
+
+element에는 1개의 element만 들어가야함 2개 넣고 싶으면 <></>로 묶기
+
+
+TS interface
+https://poiemaweb.com/typescript-interface
+
+
+function Login(props: ILogin) {
+  return <h1>Login</h1>;
+}
+
+props를 {setIsLoggedIn}, 편히 쓸수 있음
+
+apollo client
+    reactive variables 포함
+    graphql을 사용하는 react mixin
+    backend와 상호작용
+
+    reactive variable 아무데서나 바꿀 수 있음
+        trigger rendering, that listening the variable
+        (variable : const isLoggedIn = useReactiveVar(isLoggedInVar))
+        (listening the "isLoggedIn" var )
+        const isLoggedIn = useReactiveVar(isLoggedInVar);
+
+TS type 선언 파일
+    name.d.ts
+
+react-hook-form
+    useForm
+    form을 쉽게 사용할 수 있음
+
+styled-components
+    CSS 상속
+    const TopBox = styled(WhiteBox)``
+
+React children
+    children props가 자동적으로 생성
+    
+    interface IAuthLayout {
+        children: React.ReactNode;
+    }
+    
+React Helmet
+    모든 helmet 컴포넌트들이 helmet provider안에 있어야 함
+
+
+React Hook form
+    기존의 form, React방식으로 작성하려면, useState를 너무 많이 선언해야함
+    이벤트 리스너도 많이 등록
+    버튼 클릭시, preventDefault(),
+    특정 필드가 입력되어야만 버튼 누를 수 있게 하려면, disabled={var} 이런식으로 작성해야함
+
+
+    const {register, handleSubmit, watch, setErrors,formState}=useForm();
+
+    register만 해주면, value가 useForm()에 의해 컨트롤 됨
+    watch() : 관찰하고 있는 value들 볼 수 있음
+    handleSubmit : valid / invalid case 2개의 func을 arg로 가짐
+        submit 이후 valid/invalid시 각각 함수 실행
+    setErrors : error 설정 가능
+    formState : form이 현재 valid한지 등등 여러 상태를 볼 수 있음
+    
+    <Input
+        {...register("username", {
+            required: "Username is required",
+            minLength: 5,
+            //if use async, 백엔드에서 실시간으로 처리 가능
+            validate: (currentValue) => currentValue.includes("potato"),
+        })}/>
+
+
+    mode(Validation)
+        onSubmit : Submit했을 때 유효성 검사
+        onChange : input 변하는 순간 유효성 검사
+            input에 뭐를 적기 시작하는 순간부터 즉시 validation
+        onBlur : input에 포커스 해제된 순간 유효성 검사
+        
+
+    바뀔때만 update
+
+Backend&Frontend 연결
+    using apollo client
+        in apollo.ts
+        cache,uri 필수
+    <ApolloProvider>로 사용하는 곳을 감싸줘야 함
+
+clearErrors
+    Error 발생 => form은 invalid 상태
+    사용하고 싶은 곳에서 이벤트 리스너로 clearErrors("errorName") 등록
+
+Login
+    1. localStorage.setItem (token store in local storage)
+    2. set isLoggedInVar to true
+
+useNavigate
+    redirect, redirect한 사이트에 state까지 보낼 수 있음
+
+
+박스를 어떻게 모을 것인가 중요!
+    Header에서는, 로고랑 나머지 icon들을 박스로 나누어서
+    flex, space between사용
+
+
+Header가 상황에 따라 다른 모양을 갖게 하기 위해,
+    Header를 감싸는 Layout
